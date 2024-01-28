@@ -1,5 +1,6 @@
 package web.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +13,7 @@ public class CarController {
 
     private final CarService carService;
 
+    @Autowired
     public CarController(CarService carService) {
         this.carService = carService;
     }
@@ -19,7 +21,7 @@ public class CarController {
     @GetMapping("/cars")
     public String index(Model model, HttpServletRequest request) {
         String id = request.getParameter("id");
-        int counter = id == null ? 5 : Integer.parseInt(id);
+        int counter = id == null ? 5 : Math.max(Integer.parseInt(id), 0);
         model.addAttribute("cars", carService.returnTheNumberOfCarsByCounter(counter));
         return "/carPages/index";
     }
